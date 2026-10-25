@@ -1189,7 +1189,7 @@ let manualData = {
 // ═══════════════════════════════════════════════════════════════════════
 
 const GARMIN_KEY_STORAGE = 'bot_garmin_api_key';
-const GARMIN_PROXY = 'https://cors-anywhere.herokuapp.com/'; // CORS proxy for client-side requests
+const GARMIN_PROXY = 'https://garmin-proxy.tartarm.workers.dev/proxy'; // Cloudflare Worker proxy
 
 function loadGarminKey() {
   try { return localStorage.getItem(GARMIN_KEY_STORAGE) || ''; } catch(e) { return ''; }
@@ -1274,8 +1274,11 @@ async function connectGarmin() {
 
 async function tryGarminFetch(key, path) {
   try {
-    const resp = await fetch('https://connect.garmin.com' + path, {
-      headers: { 'Authorization': 'Bearer ' + key, 'Accept': 'application/json' }
+    const resp = await fetch(GARMIN_PROXY + path, {
+      headers: {
+        'X-Garmin-Api-Key': key,
+        'Accept': 'application/json'
+      }
     });
     return { ok: resp.ok, status: resp.status };
   } catch(e) {
