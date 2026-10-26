@@ -1230,6 +1230,9 @@ function initGarminCard() {
     document.getElementById('garmin-status-disconnected').style.display = 'none';
     document.getElementById('garmin-connected-summary').textContent = 'API key saved · Last pull: ' +
       (localStorage.getItem('bot_garmin_last_pull') || 'never');
+    // Pre-fill input and enable button when key loaded from storage
+    const inp = document.getElementById('garmin-api-key');
+    if(inp) { inp.value = key; document.getElementById('garmin-connect-btn').disabled = false; }
   } else {
     document.getElementById('garmin-status-connected').style.display = 'none';
     document.getElementById('garmin-status-disconnected').style.display = '';
